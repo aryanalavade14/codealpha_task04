@@ -1,0 +1,9 @@
+# AI VISION X - Python 3.12 (Windows)
+# Install with:  pip install -r requirements.txt
+# (You already have most of these in your .venv - pip will simply skip them.)
+
+ultralytics>=8.3.0      # YOLO11 + ByteTrack (also installs torch, numpy, opencv-python)
+flask>=3.0.0            # web server for the dashboard
+opencv-python>=4.8.0    # webcam / video input and drawing
+psutil>=5.9.0           # CPU / memory / disk / network metrics
+lap>=0.5.12             # needed by ByteTrack's matching step

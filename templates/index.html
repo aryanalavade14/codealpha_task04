@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI VISION X - Intelligent Vision Analytics</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ============ ICON SPRITE (inline SVG, Lucide-style, no external dependency) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M22 8l-6 4 6 4z"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="8" y="8" width="8" height="8" rx="1"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+    <symbol id="i-memory" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 11v2M10 11v2M14 11v2M18 11v2M6 17v3M10 17v3M14 17v3M18 17v3"/></symbol>
+    <symbol id="i-disk" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4"/></symbol>
+  </defs>
+</svg>
+
+<div class="app" id="app">
+
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><svg class="ic"><use href="#i-logo"/></svg></div>
+      <div>
+        <div class="brand-name">AI VISION <span>X</span></div>
+        <div class="brand-sub">Intelligent Vision Analytics</div>
+      </div>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-view="dashboard"><svg class="ic"><use href="#i-dashboard"/></svg>Dashboard</button>
+      <button class="nav-item" data-view="cameras"><svg class="ic"><use href="#i-camera"/></svg>Cameras</button>
+      <button class="nav-item" data-view="detections"><svg class="ic"><use href="#i-scan"/></svg>Detections</button>
+      <button class="nav-item" data-view="tracking"><svg class="ic"><use href="#i-target"/></svg>Tracking</button>
+      <button class="nav-item" data-view="alerts"><svg class="ic"><use href="#i-bell"/></svg>Alerts<span class="badge" id="alertBadge" hidden>0</span></button>
+      <button class="nav-item" data-view="analytics"><svg class="ic"><use href="#i-chart"/></svg>Analytics</button>
+      <button class="nav-item" data-view="settings"><svg class="ic"><use href="#i-sliders"/></svg>Settings</button>
+    </nav>
+
+    <div class="side-foot">
+      <div class="side-chip"><span class="k">Model</span><span class="v" id="sideModel">YOLO11 Nano</span></div>
+      <div class="side-chip"><span class="k">Tracker</span><span class="v">ByteTrack</span></div>
+      <div class="tagline">See Beyond the Ordinary</div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ============================ MAIN ============================ -->
+  <div class="main">
+
+    <!-- TOP NAVBAR -->
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu"><svg class="ic"><use href="#i-menu"/></svg></button>
+      <div class="title-block">
+        <h1>AI VISION X <span class="title-dim">| Command Center</span></h1>
+        <div class="subtitle">Intelligent Object Detection &amp; Tracking</div>
+      </div>
+      <div class="top-right">
+        <span class="pill" id="statusPill"><i class="dot"></i><span id="statusText">STANDBY</span></span>
+        <span class="pill pill-model" id="modelPill"><svg class="ic"><use href="#i-zap"/></svg><span id="modelText">Loading model…</span></span>
+        <span class="pill pill-clock"><svg class="ic"><use href="#i-clock"/></svg><span id="clock">--</span></span>
+        <button class="btn btn-ghost" id="refreshBtn"><svg class="ic"><use href="#i-refresh"/></svg>Refresh</button>
+      </div>
+    </header>
+
+    <div class="banner" id="banner" hidden></div>
+
+    <main class="content">
+
+      <!-- ====================== VIEW: DASHBOARD ====================== -->
+      <section class="view active" id="view-dashboard">
+
+        <div class="stats">
+          <div class="stat" style="--accent:var(--cyan)">
+            <div class="stat-ic"><svg class="ic"><use href="#i-scan"/></svg></div>
+            <div><div class="stat-label">Total Detections</div><div class="stat-value" id="sTotal">0</div><div class="stat-note">unique objects tracked</div></div>
+          </div>
+          <div class="stat" style="--accent:var(--violet)">
+            <div class="stat-ic"><svg class="ic"><use href="#i-box"/></svg></div>
+            <div><div class="stat-label">Objects in Frame</div><div class="stat-value" id="sInFrame">0</div><div class="stat-note" id="sInFrameNote">nothing detected</div></div>
+          </div>
+          <div class="stat" style="--accent:var(--green)">
+            <div class="stat-ic"><svg class="ic"><use href="#i-target"/></svg></div>
+            <div><div class="stat-label">Active Tracks</div><div class="stat-value" id="sTracks">0</div><div class="stat-note">ByteTrack IDs live now</div></div>
+          </div>
+          <div class="stat" style="--accent:var(--amber)">
+            <div class="stat-ic"><svg class="ic"><use href="#i-zap"/></svg></div>
+            <div><div class="stat-label">Inference FPS</div><div class="stat-value" id="sFps">0.0</div><div class="stat-note" id="sLatency">— ms / frame</div></div>
+          </div>
+        </div>
+
+        <div class="grid-main">
+          <!-- LIVE CAMERA -->
+          <div class="card live-card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Live Camera Feed</div>
+                <div class="card-sub" id="liveSource">Webcam 0</div>
+              </div>
+              <div class="live-controls">
+                <div class="seg" id="srcSeg">
+                  <button data-src="webcam" class="on">Webcam</button>
+                  <button data-src="video">Video file</button>
+                </div>
+                <button class="btn btn-start" id="startBtn"><svg class="ic"><use href="#i-play"/></svg>Start</button>
+                <button class="btn btn-stop" id="stopBtn" disabled><svg class="ic"><use href="#i-stop"/></svg>Stop</button>
+              </div>
+            </div>
+
+            <div class="video-wrap" id="videoWrap">
+              <img id="feed" alt="Live annotated camera feed" src="/video_feed">
+              <div class="v-badge live-badge" id="liveBadge" hidden><i class="dot"></i>LIVE</div>
+              <div class="v-badge time-badge" id="vidClock">--:--:--</div>
+              <div class="v-badge fps-badge" id="vidFps" hidden>0 FPS</div>
+              <div class="v-legend">
+                <span><i style="background:var(--cyan)"></i>Person</span>
+                <span><i style="background:var(--amber)"></i>Vehicle</span>
+                <span><i style="background:var(--green)"></i>Animal</span>
+                <span><i style="background:var(--violet)"></i>Object</span>
+              </div>
+            </div>
+
+            <div class="src-bar" id="srcBar">
+              <div class="src-group" id="webcamGroup">
+                <label>Camera</label>
+                <select id="camSelect"><option value="0">Camera 0</option><option value="1">Camera 1</option><option value="2">Camera 2</option><option value="3">Camera 3</option></select>
+              </div>
+              <div class="src-group" id="videoGroup" hidden>
+                <label>Video</label>
+                <select id="videoSelect"><option value="">— no uploads yet —</option></select>
+                <label class="btn btn-ghost btn-sm" for="videoFile"><svg class="ic"><use href="#i-upload"/></svg>Upload</label>
+                <input type="file" id="videoFile" accept="video/*,.mp4,.avi,.mov,.mkv,.webm" hidden>
+                <span class="upload-state" id="uploadState"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DETECTION EVENTS -->
+          <div class="card events-card">
+            <div class="card-head">
+              <div><div class="card-title">Recent Detection Events</div><div class="card-sub">New object enters the scene</div></div>
+              <button class="link-btn" data-goto="alerts">View all</button>
+            </div>
+            <div class="events" id="eventsMini"><div class="empty">No events yet.<br>Start monitoring to see detections here.</div></div>
+          </div>
+        </div>
+
+        <!-- ANALYTICS -->
+        <div class="grid-analytics">
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Object Distribution</div><div class="card-sub">Unique objects per class</div></div></div>
+            <div class="chart-box donut-box">
+              <canvas id="chartDist"></canvas>
+              <div class="chart-empty" id="distEmpty">No objects counted yet</div>
+            </div>
+            <div class="fallback-bars" id="distFallback" hidden></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Objects in Frame</div><div class="card-sub">Last 60 seconds</div></div></div>
+            <div class="chart-box"><canvas id="chartTime"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">Detection Statistics</div><div class="card-sub">This session</div></div></div>
+            <dl class="kv" id="statList">
+              <div><dt>Frames processed</dt><dd id="kFrames">0</dd></div>
+              <div><dt>Raw detections (all frames)</dt><dd id="kRaw">0</dd></div>
+              <div><dt>Most common class</dt><dd id="kTop">—</dd></div>
+              <div><dt>Classes seen</dt><dd id="kClasses">0</dd></div>
+              <div><dt>Session uptime</dt><dd id="kUptime">00:00:00</dd></div>
+              <div><dt>Confidence threshold</dt><dd id="kConf">0.35</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- SYSTEM STATUS -->
+        <div class="card sys-card">
+          <div class="card-head"><div><div class="card-title">System Status</div><div class="card-sub">Live host metrics (psutil)</div></div></div>
+          <div class="gauges">
+            <div class="gauge" data-key="cpu" style="--accent:var(--green)">
+              <div class="ring"><svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="52"/><circle class="ring-fg" cx="60" cy="60" r="52"/></svg><div class="ring-text"><b id="gCpu">0%</b><small id="gCpuSub">load</small></div></div>
+              <div class="g-label"><svg class="ic"><use href="#i-cpu"/></svg>CPU Usage</div>
+            </div>
+            <div class="gauge" data-key="mem" style="--accent:var(--blue)">
+              <div class="ring"><svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="52"/><circle class="ring-fg" cx="60" cy="60" r="52"/></svg><div class="ring-text"><b id="gMem">0 GB</b><small id="gMemSub">/ 0 GB</small></div></div>
+              <div class="g-label"><svg class="ic"><use href="#i-memory"/></svg>Memory Usage</div>
+            </div>
+            <div class="gauge" data-key="disk" style="--accent:var(--amber)">
+              <div class="ring"><svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="52"/><circle class="ring-fg" cx="60" cy="60" r="52"/></svg><div class="ring-text"><b id="gDisk">0%</b><small id="gDiskSub">0 / 0 GB</small></div></div>
+              <div class="g-label"><svg class="ic"><use href="#i-disk"/></svg>Disk Usage</div>
+            </div>
+            <div class="gauge" data-key="net" style="--accent:var(--violet)">
+              <div class="ring"><svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="52"/><circle class="ring-fg" cx="60" cy="60" r="52"/></svg><div class="ring-text"><b id="gNet">0 Mbps</b><small id="gNetSub">↓0 ↑0</small></div></div>
+              <div class="g-label"><svg class="ic"><use href="#i-network"/></svg>Network</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== VIEW: CAMERAS ====================== -->
+      <section class="view" id="view-cameras">
+        <div class="page-head"><h2>Cameras &amp; Sources</h2><p>Choose where AI VISION X reads video from.</p></div>
+        <div class="grid-two">
+          <div class="card">
+            <div class="card-title">Active Source</div>
+            <dl class="kv big">
+              <div><dt>Source</dt><dd id="camSource">Webcam 0</dd></div>
+              <div><dt>Status</dt><dd id="camStatus">Standby</dd></div>
+              <div><dt>Resolution</dt><dd>Auto-scaled to 960 px wide</dd></div>
+              <div><dt>Frames processed</dt><dd id="camFrames">0</dd></div>
+            </dl>
+            <div class="row-actions">
+              <button class="btn btn-start" id="startBtn2"><svg class="ic"><use href="#i-play"/></svg>Start monitoring</button>
+              <button class="btn btn-stop" id="stopBtn2" disabled><svg class="ic"><use href="#i-stop"/></svg>Stop</button>
+            </div>
+            <p class="hint">Use the source selector on the Dashboard to switch between webcam and video file.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Uploaded Videos</div>
+            <p class="hint">Videos you upload are stored in the project's <code>uploads/</code> folder.</p>
+            <div class="video-list" id="videoList"><div class="empty">No videos uploaded yet.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== VIEW: DETECTIONS ====================== -->
+      <section class="view" id="view-detections">
+        <div class="page-head"><h2>Detections</h2><p>Objects found in the current frame.</p></div>
+        <div class="card">
+          <div class="table-wrap"><table class="tbl">
+            <thead><tr><th>Class</th><th>Category</th><th>Tracking ID</th><th>Confidence</th></tr></thead>
+            <tbody id="detBody"><tr><td colspan="4" class="empty-cell">Nothing detected right now.</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ====================== VIEW: TRACKING ====================== -->
+      <section class="view" id="view-tracking">
+        <div class="page-head"><h2>Tracking</h2><p>Objects currently followed by ByteTrack. Each keeps its ID while it stays in view.</p></div>
+        <div class="card">
+          <div class="table-wrap"><table class="tbl">
+            <thead><tr><th>Track ID</th><th>Class</th><th>Confidence</th><th>First seen</th><th>Time tracked</th><th>Frames</th></tr></thead>
+            <tbody id="trackBody"><tr><td colspan="6" class="empty-cell">No active tracks.</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ====================== VIEW: ALERTS ====================== -->
+      <section class="view" id="view-alerts">
+        <div class="page-head"><h2>Alerts &amp; Detection Events</h2><p>A new event is logged the first time a tracked object appears.</p></div>
+        <div class="card">
+          <div class="events events-full" id="eventsFull"><div class="empty">No events yet.</div></div>
+        </div>
+      </section>
+
+      <!-- ====================== VIEW: ANALYTICS ====================== -->
+      <section class="view" id="view-analytics">
+        <div class="page-head"><h2>Analytics</h2><p>Aggregated statistics for the current monitoring session.</p></div>
+        <div class="grid-two">
+          <div class="card"><div class="card-title">Objects by class (unique)</div><div class="chart-box tall"><canvas id="chartDist2"></canvas></div></div>
+          <div class="card"><div class="card-title">Objects in frame over time</div><div class="chart-box tall"><canvas id="chartTime2"></canvas></div></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">Class breakdown</div>
+          <div class="table-wrap"><table class="tbl">
+            <thead><tr><th>Class</th><th>Unique objects</th><th>In frame now</th></tr></thead>
+            <tbody id="classBody"><tr><td colspan="3" class="empty-cell">No data yet.</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ====================== VIEW: SETTINGS ====================== -->
+      <section class="view" id="view-settings">
+        <div class="page-head"><h2>Settings</h2><p>Changes apply instantly to the running detector.</p></div>
+        <div class="grid-two">
+          <div class="card">
+            <div class="card-title">Detection</div>
+            <div class="field">
+              <label>Confidence threshold <b id="confVal">0.35</b></label>
+              <input type="range" id="confRange" min="0.10" max="0.90" step="0.05" value="0.35">
+              <p class="hint">Higher = fewer, more certain detections. Lower = catches more but with more false alarms.</p>
+            </div>
+            <div class="field">
+              <label>Inference size</label>
+              <select id="imgszSelect">
+                <option value="320">320 px — fastest</option>
+                <option value="480">480 px</option>
+                <option value="640" selected>640 px — balanced (default)</option>
+                <option value="960">960 px — most accurate, slowest</option>
+              </select>
+              <p class="hint">If the video is laggy on your laptop, pick a smaller size.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">About</div>
+            <dl class="kv big">
+              <div><dt>Product</dt><dd>AI VISION X</dd></div>
+              <div><dt>Model</dt><dd id="setModel">YOLO11 Nano (yolo11n.pt)</dd></div>
+              <div><dt>Tracker</dt><dd>ByteTrack</dd></div>
+              <div><dt>Backend</dt><dd>Flask + OpenCV + Ultralytics</dd></div>
+              <div><dt>Tagline</dt><dd>See Beyond the Ordinary</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <footer class="foot">AI VISION X · YOLO11 + ByteTrack + OpenCV · All figures shown are computed live from your camera and system.</footer>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<!-- Chart.js (loaded from CDN; the dashboard has a built-in fallback if it is offline) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
